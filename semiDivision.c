@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <math.h>
 
-float bisec(float a, float b, float e, float e1);
-float func( float x);
-int sign(float x);
+float bisec(float a, float b, float e, float e1);//Инициализация метода бисекции(половинного деления)
+float func( float x);// Инициализация метода заданной функции 
+int sign(float x);// Инициализация метода определяющего знак 
 
 int main()
 {
-	printf("x = %f",bisec(1.5, 3, 0.0001, 0.0001));
+	printf("x = %f",bisec(1.5, 3, 0.0001, 0.0001));// Вывод на экран решения уравнения 
 }
 
-float func( float x)
+float func( float x)//Метод возвращает значение заданной функции, вычисленной от текущего параметра 
 {
-	return x*cos(3*sqrt(x));
+	return x*cos(3*sqrt(x)); //Вариант 9
 }
 
-int sign(float x)
+int sign(float x)//Метод возвращает 1 либо -1 в зависимости от поступившего параметра
 {
 	int res;
 	res=0;
@@ -24,7 +24,7 @@ int sign(float x)
 	return res;
 }
 
-float bisec(float a, float b, float e, float e1)
+float bisec(float a, float b, float e, float e1)//Метод посредством цикла while делит заданный отрезок пополам до тех пор пока разница между концами отрезка не будет меньше или равна параметру е, либо абсолютное значение функции в текущей точке приблизится к нулю менее чем параметр е1
 {
 	float x;
 	while (b-a>e)
