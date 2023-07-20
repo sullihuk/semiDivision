@@ -10,7 +10,7 @@ float functionAccuracy;
 float argumentAccuracy;
 float step;
 void separation (float start, float step, float finish);
-float semidiv (float a, float b, float epsx, float epsy);
+void semidiv (float a, float b, float epsx, float epsy, int n);
 
 
 int main()
@@ -26,11 +26,11 @@ int main()
   printf("Введите значение конца интервала:\n " );
   scanf("%f", &finished);
 
-  printf("Введите значение шага сетки для отделения корней \nРекомендуемое значение от  %.2f до %.2f: \n", 0.1, 1 );
+  printf("Введите значение шага сетки для отделения корней \nРекомендуемое значение от  %.2f до %.2f: \n", 0.1, 1.0 );
   scanf("%f", &step);
   while (step<=0.1 && step>=1)
   {
-    printf("Введенное значение не входит в рекомендуюмую область, значение должно быть в пределах %.2f - %.2f:\n ", 0.1, 1 );
+    printf("Введенное значение не входит в рекомендуюмую область, значение должно быть в пределах %.2f - %.2f:\n ", 0.1, 1.0 );
     scanf("%f", &step);
   }
 
@@ -41,11 +41,10 @@ int main()
   scanf("%f", &argumentAccuracy);
 
   separation(started, step, finished);
-  //printf("x = %f\n",semidiv(started, finished, functionAccuracy));
+  //printf("x = %f\n",semidiv(started, finished, functionAccuracy, argumentAccuracy));
+
   clock_t start, end;
   start = clock();
-
-	//printf("x = %f\n", dihot(started, finished,step,functionAccuracy));// Вывод на экран решения уравнения. Параметром вывода является результат метода реализующего, собственно, метод дихотомии. В свою очередь, параметрами функции являются начало и конец отрезка, на котором находится решение, эти цифры можно менять; точность с которой будет решаться уравнение, значение, с которым будет сравниваться значение заданной функции на предмет приближения к нулю (по известной теореме, это и будет решением уравнения) соответственно.
   end = clock();
   double time_taken = ((double)(end - start))/CLOCKS_PER_SEC;
   //printf("Количество итераций равно: %d\n", n);
@@ -59,44 +58,53 @@ float func( float x)//Метод возвращает значение зада�
 
 void separation (float start, float s, float finish)
 {
-    float x1 = start;
-    float x2;
-    float y1;
-    float y2;
-    x2 = x1 + s;
-    y1 = func(x1);
+  int u = 0;
+  int i;
+  float x1 = start;
+  float x2;
+  float y1;
+  float y2;
+  x2 = x1 + s;
+  y1 = func(x1);
+
   while (x2<finish)
   {
     y2 = func(x2);
-    int i;
     i++;
     if (y1*y2<=0){
+      
+      u++;
       printf("x1: %f,\tx2: %f\ny1: %f\ty2: %f\n", x1, x2, y1, y2);
-      printf("Корень x_%d: %f\n", i, semidiv(x1, x2, functionAccuracy,argumentAccuracy));
+      semidiv(x1, x2, functionAccuracy, argumentAccuracy, u);
     }
     x1 = x2;
     x2 = x1+s;
     y1 = y2;
   }
+    printf("Количество итераций отделения корней: %d: \n", i );
 }
 
-float semidiv (float a, float b, float epsx, float epsy)
+void semidiv (float a, float b, float epsy, float epsx, int n)
 {
-  float c = (a+b)/2;
+  float c;
+  int t;
 
-  while(fabs(b-a) > epsx && fabs(func(a) > epsy))
+  while(fabs(b-a) > epsx && fabs(func(a)) > epsy)
   {
+    t++;
+    c = (a+b)/2;
     if (func(a)*func(c) < 0)
     {
       b = c;
-      printf("lalala\n");
     }
-    else{
+    else {
       a = c;
-      printf("hahahah\n");
+    }
   }
-    c = (a+b)/2;
-  }
+  c = (a+b)/2;
 
-  return c;
-  }
+  printf("Значение функции при найденном решении: %.10f\n", func(c));
+  printf("Количество итераций уточнения корня: %d\n", t);
+  printf("Корень x_%d: %.10f\n", n, c); 
+  puts("==============================================");
+}
