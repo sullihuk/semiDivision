@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+//#include <Windows.h>
 
 
+int funcComp;
+int computationFunc(int i);
 float func(float x);// Инициализация метода заданной функции 
 float started;
 float finished;
@@ -15,6 +18,7 @@ void semidiv (float a, float b, float epsx, float epsy, int n);
 
 int main()
 {
+  //system("chcp 65001");
   printf("Введите начальную точку интервала:\n " );
   scanf("%f", &started);
   while (started<-7/4)
@@ -37,11 +41,11 @@ int main()
   printf("Введите точность решения:\n ");
   scanf("%f", &functionAccuracy);
 
-  printf("Введите точность по аргументу решения :\n " );
+  printf("Введите точность по аргументу решения:\n " );
   scanf("%f", &argumentAccuracy);
 
   separation(started, step, finished);
-  //printf("x = %f\n",semidiv(started, finished, functionAccuracy, argumentAccuracy));
+  printf("Количество вычислений функции f(x): %d\n",funcComp+1);
 
   clock_t start, end;
   start = clock();
@@ -49,6 +53,12 @@ int main()
   double time_taken = ((double)(end - start))/CLOCKS_PER_SEC;
   //printf("Количество итераций равно: %d\n", n);
   printf("Времени затрачено: %f секунд\n",time_taken);
+}
+
+int computationFunc(int i)
+{
+  funcComp +=i;
+  return funcComp;
 }
 
 float func( float x)//Метод возвращает значение заданной функции, вычисленной от текущего параметра 
@@ -81,6 +91,7 @@ void separation (float start, float s, float finish)
     x2 = x1+s;
     y1 = y2;
   }
+    computationFunc(i);
     printf("Количество итераций отделения корней: %d: \n", i );
 }
 
@@ -106,5 +117,6 @@ void semidiv (float a, float b, float epsy, float epsx, int n)
   printf("Значение функции при найденном решении: %.10f\n", func(c));
   printf("Количество итераций уточнения корня: %d\n", t);
   printf("Корень x_%d: %.10f\n", n, c); 
+  computationFunc(t);
   puts("==============================================");
 }
