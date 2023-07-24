@@ -2,10 +2,10 @@
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
-//#include <Windows.h>
+#include <Windows.h>
 
 
-int funcComp;
+int funcComp = 0;
 double expectedvalue = -7.0/4.0;
 int computationFunc(int i);
 double func(double x);// Инициализация метода заданной функции 
@@ -22,41 +22,39 @@ double stepMax = 1.0;
 
 int main()
 {
-  //system("chcp 65001");
-  printf("Введите начальную точку интервала:\n " );
+  system("chcp 65001");
+  clock_t begin, end;
+  printf("Введите начальную точку интервала: " );
   scanf("%lf", &started);
   while (started<expectedvalue )
   {
-    printf("Введенное значение не входит в область определения, значение должно быть более чем %.f:\n ", expectedvalue  );
+    printf("Введенное значение не входит в область определения, значение должно быть более чем %.f: ", expectedvalue  );
     scanf("%lf", &started);
   }
 
-  printf("Введите значение конца интервала:\n " );
+  printf("Введите значение конца интервала: " );
   scanf("%lf", &finished);
 
-  printf("Введите значение шага сетки для отделения корней \nРекомендуемое значение от  %.2f до %.2f: \n",stepMin, stepMax );
+  printf("Введите значение шага сетки для отделения корней \nРекомендуемое значение от  %.2f до %.2f: ",stepMin, stepMax );
   scanf("%lf", &step);
   while (step<=stepMin && step>=stepMax)
   {
-    printf("Введенное значение не входит в рекомендуюмую область, значение должно быть в пределах %.2f - %.2f:\n ", stepMin, stepMax );
+    printf("Введенное значение не входит в рекомендуюмую область, значение должно быть в пределах %.2f - %.2f: ", stepMin, stepMax );
     scanf("%lf", &step);
   }
 
-  printf("Введите точность решения:\n ");
+  printf("Введите точность решения: ");
   scanf("%lf", &functionAccuracy);
 
-  printf("Введите точность по аргументу решения:\n " );
+  printf("Введите точность по аргументу решения: " );
   scanf("%lf", &argumentAccuracy);
-
-
-  clock_t start, end;
-  start = clock();
+  puts("==============================================");
+  begin = clock();
   separation(started, step, finished);
   printf("Количество вычислений функции f(x): %d\n",funcComp+1);
   end = clock();
-  double time_taken = ((double)(end - start))/CLOCKS_PER_SEC;
-  //printf("Количество итераций равно: %d\n", n);
-  printf("Времени затрачено: %f секунд\n",time_taken);
+  double time_taken = ((double)(end - begin))/CLOCKS_PER_SEC;
+  printf("Времени затрачено: %.15f секунд\n",time_taken);
 }
 
 int computationFunc(int i)
@@ -102,7 +100,7 @@ void separation (double start, double s, double finish)
 void semidiv (double a, double b, double epsy, double epsx, int n)
 {
   double c;
-  int t;
+  int t =0;
 
   while(fabs(b-a) > epsx && fabs(func(a)) > epsy)
   {
