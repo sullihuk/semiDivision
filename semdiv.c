@@ -5,6 +5,7 @@
 
 
 int funcComp;
+float expectedvalue = -7.0/4.0;
 int computationFunc(int i);
 float func(float x);// Инициализация метода заданной функции 
 float started;
@@ -21,9 +22,9 @@ int main()
   //system("chcp 65001");
   printf("Введите начальную точку интервала:\n " );
   scanf("%f", &started);
-  while (started<-7/4)
+  while (started<expectedvalue )
   {
-    printf("Введенное значение не входит в область определения, значение должно быть более чем %.f:\n ", -7/4 );
+    printf("Введенное значение не входит в область определения, значение должно быть более чем %.f:\n ", expectedvalue  );
     scanf("%f", &started);
   }
 
@@ -44,11 +45,11 @@ int main()
   printf("Введите точность по аргументу решения:\n " );
   scanf("%f", &argumentAccuracy);
 
-  separation(started, step, finished);
-  printf("Количество вычислений функции f(x): %d\n",funcComp+1);
 
   clock_t start, end;
   start = clock();
+  separation(started, step, finished);
+  printf("Количество вычислений функции f(x): %d\n",funcComp+1);
   end = clock();
   double time_taken = ((double)(end - start))/CLOCKS_PER_SEC;
   //printf("Количество итераций равно: %d\n", n);
@@ -69,7 +70,7 @@ float func( float x)//Метод возвращает значение зада�
 void separation (float start, float s, float finish)
 {
   int u = 0;
-  int i;
+  int i=0;
   float x1 = start;
   float x2;
   float y1;
