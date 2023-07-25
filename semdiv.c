@@ -1,49 +1,52 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <stdlib.h>
 //#include <Windows.h>
 
 
 int funcComp;
-float expectedvalue = -7.0/4.0;
+double expectedvalue = -7.0/4.0;
 int computationFunc(int i);
-float func(float x);// Инициализация метода заданной функции 
-float started;
-float finished;
-float functionAccuracy;
-float argumentAccuracy;
-float step;
-void separation (float start, float step, float finish);
-void semidiv (float a, float b, float epsx, float epsy, int n);
+double func(double x);// Инициализация метода заданной функции 
+double started = 0;
+double finished = 0;
+double functionAccuracy = 0;
+double argumentAccuracy = 0;
+double step = 0;
+void separation (double start, double step, double finish);
+void semidiv (double a, double b, double epsx, double epsy, int n);
+double stepMin = 0.1;
+double stepMax = 1.0;
 
 
 int main()
 {
   //system("chcp 65001");
   printf("Введите начальную точку интервала:\n " );
-  scanf("%f", &started);
+  scanf("%lf", &started);
   while (started<expectedvalue )
   {
     printf("Введенное значение не входит в область определения, значение должно быть более чем %.f:\n ", expectedvalue  );
-    scanf("%f", &started);
+    scanf("%lf", &started);
   }
 
   printf("Введите значение конца интервала:\n " );
-  scanf("%f", &finished);
+  scanf("%lf", &finished);
 
-  printf("Введите значение шага сетки для отделения корней \nРекомендуемое значение от  %.2f до %.2f: \n", 0.1, 1.0 );
-  scanf("%f", &step);
-  while (step<=0.1 && step>=1)
+  printf("Введите значение шага сетки для отделения корней \nРекомендуемое значение от  %.2f до %.2f: \n",stepMin, stepMax );
+  scanf("%lf", &step);
+  while (step<=stepMin && step>=stepMax)
   {
-    printf("Введенное значение не входит в рекомендуюмую область, значение должно быть в пределах %.2f - %.2f:\n ", 0.1, 1.0 );
-    scanf("%f", &step);
+    printf("Введенное значение не входит в рекомендуюмую область, значение должно быть в пределах %.2f - %.2f:\n ", stepMin, stepMax );
+    scanf("%lf", &step);
   }
 
   printf("Введите точность решения:\n ");
-  scanf("%f", &functionAccuracy);
+  scanf("%lf", &functionAccuracy);
 
   printf("Введите точность по аргументу решения:\n " );
-  scanf("%f", &argumentAccuracy);
+  scanf("%lf", &argumentAccuracy);
 
 
   clock_t start, end;
@@ -62,19 +65,19 @@ int computationFunc(int i)
   return funcComp;
 }
 
-float func( float x)//Метод возвращает значение заданной функции, вычисленной от текущего параметра 
+double func( double x)//Метод возвращает значение заданной функции, вычисленной от текущего параметра 
 {
 	return sqrt(4*x+7)-3*cos(x); //Вариант 6
 }
 
-void separation (float start, float s, float finish)
+void separation (double start, double s, double finish)
 {
   int u = 0;
   int i=0;
-  float x1 = start;
-  float x2;
-  float y1;
-  float y2;
+  double x1 = start;
+  double x2;
+  double y1;
+  double y2;
   x2 = x1 + s;
   y1 = func(x1);
 
@@ -96,9 +99,9 @@ void separation (float start, float s, float finish)
     printf("Количество итераций отделения корней: %d: \n", i );
 }
 
-void semidiv (float a, float b, float epsy, float epsx, int n)
+void semidiv (double a, double b, double epsy, double epsx, int n)
 {
-  float c;
+  double c;
   int t;
 
   while(fabs(b-a) > epsx && fabs(func(a)) > epsy)
